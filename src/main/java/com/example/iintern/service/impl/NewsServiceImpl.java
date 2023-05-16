@@ -8,13 +8,17 @@ import com.example.iintern.service.NewsInterface;
 import com.example.iintern.service.SourceInterface;
 import com.example.iintern.service.ThemeInterface;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -80,6 +84,24 @@ public class NewsServiceImpl implements NewsInterface {
     @Override
     public List<News> findAllByTheme_Id(Long themeId) {
         return newsRepository.findAllByTheme_Id(themeId);
+    }
+
+    @Override
+    public Map<Source, Integer> getNewsCountBySource() {
+        List<News> allNews = newsRepository.findAllFetchNewsSource();
+        Map<Source, Integer> sourceNewsCount = new HashMap<>();
+
+        for (News news : allNews) {
+            Hibernate.initialize(news.getNewsSource());
+
+            List<Source> newsSources = news.getNewsSource();
+
+            for (Source source : newsSources) {
+                sourceNewsCount.put(source, sourceNewsCount.getOrDefault(source, 0) + 1);
+            }
+        }
+
+        return sourceNewsCount;
     }
 
 
