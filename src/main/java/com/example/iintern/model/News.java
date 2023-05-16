@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "news")
 @Getter
@@ -16,4 +18,6 @@ public class News {
     @ManyToOne
     @JoinColumn(name = "theme_id")
     private Theme theme;
+    @ManyToMany
+    private List<Source> newsSource;
 }

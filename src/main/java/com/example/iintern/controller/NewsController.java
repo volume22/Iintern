@@ -4,8 +4,10 @@ import com.example.iintern.controller.dto.NewsCreateDto;
 import com.example.iintern.model.News;
 import com.example.iintern.service.NewsInterface;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -21,7 +23,7 @@ public class NewsController {
         return newsInterface.updateNews(id,createDto);
     }
     @GetMapping("/api/news-all")
-    public List<News> getbyAll() throws Exception {
+    public List<News> getByAll() throws Exception {
         return newsInterface.getByAll();
     }
     @GetMapping("/api/news/{id}")
